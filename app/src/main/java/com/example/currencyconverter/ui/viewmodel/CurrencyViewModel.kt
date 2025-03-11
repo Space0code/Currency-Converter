@@ -32,7 +32,6 @@ class CurrencyViewModel : ViewModel() {
         viewModelScope.launch {
             _uiState.value = UiState.Loading
             try {
-                // Get response
                 val response = if (targetCurrencies.isNotEmpty()) {
                     apiService.getLatestRates(apiKey, baseCurrency, targetCurrencies)
                 } else {

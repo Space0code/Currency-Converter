@@ -8,7 +8,6 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.currencyconverter.viewmodel.CurrencyViewModel
 import com.example.currencyconverter.viewmodel.UiState
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -29,8 +28,6 @@ fun CurrencyListScreen(
     viewModel: CurrencyViewModel,
     navController: androidx.navigation.NavController
 ) {
-    // Get the full list of currencies from the API response if available,
-    // otherwise use an empty list.
     val uiState by viewModel.uiState.collectAsState()
 
     val randomCurrency = stringResource(R.string.eur)
@@ -68,12 +65,15 @@ fun CurrencyListScreen(
                 .padding(innerPadding)
                 .padding(16.dp)
         ) {
-            Text(text= stringResource(R.string.check_the_currencies_you_want_available), style=MaterialTheme.typography.bodyLarge)
+            Text(
+                text= stringResource(R.string.check_the_currencies_you_want_available),
+                style=MaterialTheme.typography.bodyLarge
+            )
 
             Spacer(modifier = Modifier.height(16.dp))
             Button(onClick = {
-                // Save the selection to the ViewModel
-                //viewModel.setSelectedCurrencies(selectedCurrencies.toList())
+                // This is simply navigation back to main screen,
+                // the actual state is saved on the fly.
                 navController.navigateUp()
             }) {
                 Text(
@@ -102,7 +102,10 @@ fun CurrencyListScreen(
                             }
                         )
                         Spacer(modifier = Modifier.width(8.dp))
-                        Text(currency)
+                        Text(
+                            text = currency,
+                            style = MaterialTheme.typography.bodyLarge
+                            )
                     }
                 }
             }

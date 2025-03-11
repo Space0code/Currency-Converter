@@ -13,5 +13,4 @@ val Pink40 = Color(0xFF7D5260)
 
 val OuasOrange = Color(0xFFF7921E)
 val LightOrange = Color(0xFFfcc203)
-val Cyan = Color(0xFF03DAC6)
 val ErrorRed = Color(0xFFB00020)

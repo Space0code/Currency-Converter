@@ -20,7 +20,7 @@ import com.example.currencyconverter.viewmodel.CurrencyViewModel
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun InfoScreen(
-    viewModel: CurrencyViewModel,
+    viewModel: CurrencyViewModel, // for future purposes
     navController: androidx.navigation.NavController
 ) {
     Scaffold(

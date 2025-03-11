@@ -11,7 +11,6 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.foundation.shape.RoundedCornerShape
 
 
-// Define a basic color scheme.
 private val LightColorScheme = lightColorScheme(
     primary = OuasOrange,
     onPrimary = Color.White,
@@ -25,7 +24,6 @@ private val LightColorScheme = lightColorScheme(
     onError = Color.White
 )
 
-// Define two basic typography styles: one for headers and one for body text.
 private val CustomTypography = Typography(
     // Title style
     titleLarge = TextStyle(
@@ -45,6 +43,7 @@ private val CustomTypography = Typography(
         fontWeight = FontWeight.Normal,
         fontSize = 16.sp
     ),
+    // Button text style
     labelMedium = TextStyle(
         fontFamily = FontFamily.Default,
         fontWeight = FontWeight.Bold,
@@ -52,7 +51,6 @@ private val CustomTypography = Typography(
     )
 )
 
-// Optionally, define your own shapes.
 private val CustomShapes = Shapes(
     extraSmall = RoundedCornerShape(0.dp),
     small = RoundedCornerShape(4.dp),

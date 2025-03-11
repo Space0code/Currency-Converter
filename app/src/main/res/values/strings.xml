@@ -26,5 +26,6 @@
     <string name="check_the_currencies_you_want_available">Check the currencies you want available:</string>
     <string name="save_selection">Save Selection</string>
     <string name="calculate">\"Calculate\"</string>
+    <string name="gbp">GBP</string>
 
 </resources>
