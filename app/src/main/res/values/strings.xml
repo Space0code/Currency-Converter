@@ -1,0 +1,30 @@
+<resources>
+    <string name="app_name">Currency Converter</string>
+    <string name="invalid_input">Invalid input</string>
+    <string name="eur">EUR</string>
+    <string name="fetch_rates">Fetch Rates</string>
+    <string name="base_currency">Base Currency</string>
+    <string name="target_currency">Target Currency</string>
+    <string name="input_warning">Make sure to input a number and (optionally) use the decimal dot (e.g., 3.14).</string>
+    <string name="conversion_result_text">%1$s %2$s = %3$s %4$s</string>
+    <string name="loading_rates">Loading rates…</string>
+    <string name="failed_to_load">Failed to load data! Try changing the base currency and check your internet connection.</string>
+    <string name="press_the_button_to_fetch_rates">Press the button to fetch rates.</string>
+    <string name="amount">Amount</string>
+    <string name="usd">USD</string>
+    <string name="info">Info</string>
+    <string name="back">Back</string>
+    <string name="version">Version: </string>
+    <string name="version_number">1.0.0</string>
+    <string name="date_of_last_change">Date of last change: </string>
+    <string name="date">10. 3. 2025</string>
+    <string name="author">Author: Tomi Božak</string>
+    <string name="notes">Notes: This app retrieves currency rates from https://api.currencyapi.com/ API and converts currencies. This app was developed as a final project in ID00CS48–3004 Mobile Programming with Native Technologies (spring 2025) course at OAMK.</string>
+    <string name="main">Main</string>
+    <string name="currencies">Currencies</string>
+    <string name="select_currencies">Select Currencies</string>
+    <string name="check_the_currencies_you_want_available">Check the currencies you want available:</string>
+    <string name="save_selection">Save Selection</string>
+    <string name="calculate">\"Calculate\"</string>
+
+</resources>
