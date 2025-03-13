@@ -14,37 +14,26 @@ import com.example.currencyconverter.viewmodel.CurrencyViewModel
 import com.example.currencyconverter.viewmodel.UiState
 
 @SuppressLint("DefaultLocale")
-fun calculateResult(
-    amountText: String,
-    rates: Map<String, Double>,
-    selectedTarget: String,
-    invalidInputMsg: String
-): String {
-    val amount = amountText.toDoubleOrNull() ?: return invalidInputMsg
-    val rate = rates[selectedTarget] ?: 1.0
-    return String.format("%.2f", amount * rate)
-}
-
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MainScreen(
     modifier: Modifier = Modifier,
     viewModel: CurrencyViewModel = viewModel()
 ) {
+    // Observe view model states
     val uiState by viewModel.uiState.collectAsState()
-    var amountText by remember { mutableStateOf("") }
-    var result by remember { mutableStateOf("") }
+    val targetCurrenciesList by viewModel.selectedCurrencies.collectAsState()
 
-    val targetCurrenciesList  by viewModel.selectedCurrencies.collectAsState()
+    // Get states managed in the ViewModel
+    val amountText = viewModel.amountText
+    val result = viewModel.result
+    val selectedBase = viewModel.selectedBase
+    val selectedTarget = viewModel.selectedTarget
+
     val targetCurrencies = targetCurrenciesList.joinToString(separator = ",")
-
     val invalidMsg = stringResource(id = R.string.invalid_input)
 
-    // Track the user’s selected/typed base and target currencies
-    val defaultBase = stringResource(id = R.string.eur)
-    var selectedBase by remember { mutableStateOf(defaultBase) }
-    val defaultTarget = stringResource(id = R.string.usd)
-    var selectedTarget by remember { mutableStateOf(defaultTarget) }
-
+    // Reload rates when base currency changes (if already loaded)
     LaunchedEffect(selectedBase) {
         if (viewModel.hasLoadedRates && selectedBase in targetCurrenciesList) {
             viewModel.loadRates(baseCurrency = selectedBase, targetCurrencies = targetCurrencies)
@@ -53,7 +42,9 @@ fun MainScreen(
 
     Column(modifier = modifier.padding(16.dp)) {
         // Button to fetch the currency rates
-        Button(onClick = { viewModel.loadRates(baseCurrency = selectedBase, targetCurrencies = targetCurrencies) }) {
+        Button(onClick = {
+            viewModel.loadRates(baseCurrency = selectedBase, targetCurrencies = targetCurrencies)
+        }) {
             Text(
                 text = stringResource(R.string.fetch_rates),
                 style = MaterialTheme.typography.labelMedium,
@@ -68,34 +59,30 @@ fun MainScreen(
                 // Sort currency codes alphabetically
                 val currencies = rates.keys.toList().sorted()
 
-                // Dropdown for Base Currency: clear result when changed
+                // Dropdown for Base Currency: update state via ViewModel
                 CurrencyDropdownMenu(
                     label = stringResource(R.string.base_currency),
                     value = selectedBase,
                     options = currencies,
                     onValueChange = { newValue ->
-                        selectedBase = newValue.uppercase()
-                        result = "" // clear the result on change
+                        viewModel.onSelectedBaseChanged(newValue)
                     },
                     onOptionSelected = { option ->
-                        selectedBase = option.uppercase()
-                        result = "" // clear the result on change
+                        viewModel.onSelectedBaseChanged(option)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
 
-                // Dropdown for Target Currency: clear result when changed
+                // Dropdown for Target Currency: update state via ViewModel
                 CurrencyDropdownMenu(
                     label = stringResource(R.string.target_currency),
                     value = selectedTarget,
                     options = currencies,
                     onValueChange = { newValue ->
-                        selectedTarget = newValue.uppercase()
-                        result = "" // clear result on change
+                        viewModel.onSelectedTargetChanged(newValue)
                     },
                     onOptionSelected = { option ->
-                        selectedTarget = option.uppercase()
-                        result = "" // clear result on change
+                        viewModel.onSelectedTargetChanged(option)
                     }
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -104,19 +91,19 @@ fun MainScreen(
                 TextField(
                     value = amountText,
                     onValueChange = { newValue ->
-                        amountText = newValue
-                        result = calculateResult(amountText, rates, selectedTarget, invalidMsg)
+                        viewModel.onAmountTextChanged(newValue)
                     },
                     label = { Text(stringResource(R.string.amount), style = MaterialTheme.typography.bodyLarge) },
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    colors = TextFieldDefaults.textFieldColors(
+                        containerColor = MaterialTheme.colorScheme.secondary.copy(alpha = 0.5f)
+                    )
                 )
 
                 Spacer(modifier = Modifier.height(16.dp))
-                // "Calculate" button: performs the result calculation on press.
+                // "Calculate" button: triggers conversion via ViewModel
                 Button(
-                    onClick = {
-                        result = calculateResult(amountText, rates, selectedTarget, invalidMsg)
-                    },
+                    onClick = { viewModel.onCalculateClicked(invalidMsg) },
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     Text(
@@ -126,7 +113,7 @@ fun MainScreen(
                 }
 
                 Spacer(modifier = Modifier.height(16.dp))
-                // Display result only if it is not empty.
+                // Display result if not empty
                 if (result.isNotEmpty()) {
                     if (result == stringResource(id = R.string.invalid_input)) {
                         Text(
@@ -154,22 +141,21 @@ fun MainScreen(
             }
 
             is UiState.Loading -> {
-                // Display Loading message on API call
                 Spacer(modifier = Modifier.height(16.dp))
                 Text(text = stringResource(R.string.loading_rates), style = MaterialTheme.typography.bodyLarge)
             }
 
             is UiState.Error -> {
-                // Error message and Currency dropdown option
+                // In error state, allow user to change the base currency
                 CurrencyDropdownMenu(
                     label = stringResource(R.string.base_currency),
                     value = selectedBase,
                     options = targetCurrenciesList,
                     onValueChange = { newValue ->
-                        selectedBase = newValue.uppercase()
+                        viewModel.onSelectedBaseChanged(newValue)
                     },
                     onOptionSelected = { option ->
-                        selectedBase = option.uppercase()
+                        viewModel.onSelectedBaseChanged(option)
                     }
                 )
 

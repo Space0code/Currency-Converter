@@ -27,5 +27,6 @@
     <string name="save_selection">Save Selection</string>
     <string name="calculate">\"Calculate\"</string>
     <string name="gbp">GBP</string>
+    <string name="first_fetch_the_rates_on_main_screen">First, fetch rates on main screen.</string>
 
 </resources>
