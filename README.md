@@ -2,7 +2,6 @@
 ## Android App
 
 This is an Android app developed in Android Studio as my final project in the Mobile Programming with Native Technologies course at OAMK. 
-It is a simple app with three screens, API call and a some software logic. 
 
 ### Acomplished requirements:
 - Error handling.
