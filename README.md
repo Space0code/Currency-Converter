@@ -39,10 +39,10 @@ YouTube link: https://youtu.be/7NItTf8Y5vw
 
 5. **screens**  
    - Houses the main UI composables for each screen in the app.  
-   - **MainScreen.kt**, **InfoScreen.kt**, etc.: Each file represents a distinct screen (or page) with its own UI and logic.
+   - **MainScreen.kt**, **InfoScreen.kt**, **CurrencyListScreen.kt**: Each file represents a distinct screen with its own UI and logic.
 
 6. **theme**  
-   - Manages my app-wide design elements, such as colors, typography, and shapes.  
+   - Manages the app-wide design elements, such as colors, typography, and shapes.  
    - **Color.kt**, **Theme.kt**, **Type.kt**: Provide consistent styling across the Compose components.
 
 7. **viewmodel**  
